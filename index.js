@@ -41,7 +41,9 @@ class CacheDigest {
   convertAssetUrl(files, publicFiles) {
     const assetRegex = /(asset-url\(['"](.*)['"]\))/;
     for (let file of files) {
-      let assetLines = shelljs.grep(/asset-url\(['"].*['"]\)/, file).split('\n');
+      debugger;
+      let assetLines = shelljs.grep(/asset-url\(['"].*['"]\)/, file.path).split('\n');
+      assetLines = this.cleanArray(assetLines);
       let assetStrings = [];
       for (let line of assetLines) {
         const [fullString, assetUrl] = assetRegex.exec(line);
@@ -57,6 +59,16 @@ class CacheDigest {
   calculateFileMd5(path) {
     const fileMd5 = md5File.sync(path);
     return rename(path, {suffix: `-${fileMd5}`});
+  }
+
+  cleanArray(array) {
+    let temp = [];
+
+    for(let i of array)
+      i && temp.push(i);
+
+    array = temp;
+    return array;
   }
 
   // Allows to stop web-servers & other long-running entities.
