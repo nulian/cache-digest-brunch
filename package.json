@@ -16,7 +16,8 @@
     "fs-extra": "^0.30.0",
     "md5-file": "^3.1.1",
     "path": "^0.12.7",
-    "rename": "^1.0.3"
+    "rename": "^1.0.3",
+    "shx": "^0.1.2"
   },
   "devDependencies": {
     "chai": "~3.4.1",

@@ -7,6 +7,7 @@ var md5File = require("md5-file");
 var path = require("path");
 var rename = require("rename");
 var fs = require("fs-extra");
+var shx = require("shx");
 
 // Remove everything your plugin doesn't need.
 class CacheDigest {
@@ -41,6 +42,7 @@ class CacheDigest {
   onCompile(files, publicFiles) {
     this.renameFiles(files, false);
     this.renameFiles(publicFiles, true);
+    this.convertAssetUrl(files, publicFiles);
 
   }
 
@@ -54,6 +56,10 @@ class CacheDigest {
         fs.removeSync(path);
       }
     }
+  }
+
+  convertAssetUrl(files, publicFiles) {
+    debugger;
   }
 
   // Allows to stop web-servers & other long-running entities.
