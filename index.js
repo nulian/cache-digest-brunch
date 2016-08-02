@@ -29,8 +29,7 @@ class CacheDigest {
   renameFiles(files, removeFiles) {
     for (let file of files) {
       const path = file.destinationPath ? file.destinationPath : file.path;
-      const fileMd5 = md5File.sync(path);
-      const newFileName = rename(path, {suffix: `-${fileMd5}`});
+      const newFileName = this.calculateFileMd5(path);
       fs.copySync(path, newFileName);
       if (removeFiles) {
         fs.removeSync(path);
@@ -39,19 +38,21 @@ class CacheDigest {
   }
 
   convertAssetUrl(files, publicFiles) {
-    const assetRegex = /(asset-url\(['"](.*)['"]\))/;
+    const assetRegex = /asset-url\(['"](.*)['"]\)/;
     for (let file of files) {
       debugger;
-      let assetLines = shelljs.grep(/asset-url\(['"].*['"]\)/, file.path).split('\n');
+      let assetLines = shelljs.grep(assetRegex, file.path).split('\n');
       assetLines = this.cleanArray(assetLines);
       let assetStrings = [];
       for (let line of assetLines) {
         const [fullString, assetUrl] = assetRegex.exec(line);
+        this.getKeyByValue(publicFiles, assetUrl);
         debugger;
         assetStrings << {fullString: fullString, assetUrl: assetUrl, newAssetUrl: this.calculateFileMd5(assetUrl)};
       }
-
-      shelljs.sed('-i', /asset-url\(['"](.*)['"]\)/, /\1/)
+      for (let asset of assetStrings) {
+        shelljs.sed('-i', /asset-url\(['"](.*)['"]\)/, /\1/)
+      }
     }
     debugger;
   }
@@ -69,6 +70,12 @@ class CacheDigest {
 
     array = temp;
     return array;
+  }
+
+  getKeyByValue(object, value) {
+    debugger;
+    const valueExp = new RegExp(`${value}$`);
+    return Object.keys(object).find(key => valueExp.match(object[key]));
   }
 
   // Allows to stop web-servers & other long-running entities.
