@@ -7,7 +7,7 @@ var md5File = require("md5-file");
 var path = require("path");
 var rename = require("rename");
 var fs = require("fs-extra");
-var shx = require("shx");
+var shelljs = require("shelljs");
 
 // Remove everything your plugin doesn't need.
 class CacheDigest {
