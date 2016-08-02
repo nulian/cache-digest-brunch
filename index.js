@@ -46,11 +46,12 @@ class CacheDigest {
 
   renameFiles(files, removeFiles) {
     for (let file of files) {
-      const fileMd5 = md5File.sync(file.path);
-      const newFileName = rename(file.path, {suffix: `-${fileMd5}`});
-      fs.copySync(file.path, newFileName);
+      const path = file.destinationPath ? file.destinationPath : file.path;
+      const fileMd5 = md5File.sync(path);
+      const newFileName = rename(path, {suffix: `-${fileMd5}`});
+      fs.copySync(path, newFileName);
       if (removeFiles) {
-        fs.removeSync(file.path);
+        fs.removeSync(path);
       }
     }
   }
