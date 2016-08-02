@@ -16,26 +16,6 @@ class CacheDigest {
     this.config = config && config.plugins && config.plugins.cacheDigest;
   }
 
-  // file: File => Promise[Boolean]
-  // Called before every compilation. Stops it when the error is returned.
-  // Examples: ESLint, JSHint, CSSCheck.
-  // lint(file) { return Promise.resolve(true); }
-
-  // file: File => Promise[File]
-  // Transforms a file data to different data. Could change the source map etc.
-  // Examples: JSX, CoffeeScript, Handlebars, SASS.
-  // compile(file) { return Promise.resolve(file); }
-
-  // file: File => Promise[Array: Path]
-  // Allows Brunch to calculate dependants of the file and re-compile them too.
-  // Examples: SASS '@import's, Jade 'include'-s.
-  // getDependencies(file) { return Promise.resolve(['dep.js']); }
-
-  // file: File => Promise[File]
-  // Usually called to minify or optimize the end-result.
-  // Examples: UglifyJS, CSSMin.
-  // optimize(file) { return Promise.resolve({data: minify(file.data)}); }
-
   // files: [File] => null
   // Executed when each compilation is finished.
   // Examples: Hot-reload (send a websocket push).
@@ -59,15 +39,24 @@ class CacheDigest {
   }
 
   convertAssetUrl(files, publicFiles) {
+    const assetRegex = /(asset-url\(['"](.*)['"]\))/;
     for (let file of files) {
-      const path = file.path;
-      const fileMd5 = md5File.sync(path);
-      const newFileName = rename(path, {suffix: `-${fileMd5}`});
-      debugger;
-      let asset_urls = shelljs.grep("-E", /asset-url\(['"](.*)['"]\)/, file);
+      let assetLines = shelljs.grep(/asset-url\(['"].*['"]\)/, file).split('\n');
+      let assetStrings = [];
+      for (let line of assetLines) {
+        const [fullString, assetUrl] = assetRegex.exec(line);
+        debugger;
+        assetStrings << {fullString: fullString, assetUrl: assetUrl, newAssetUrl: this.calculateFileMd5(assetUrl)};
+      }
+
       shelljs.sed('-i', /asset-url\(['"](.*)['"]\)/, /\1/)
     }
     debugger;
+  }
+
+  calculateFileMd5(path) {
+    const fileMd5 = md5File.sync(path);
+    return rename(path, {suffix: `-${fileMd5}`});
   }
 
   // Allows to stop web-servers & other long-running entities.
@@ -77,15 +66,6 @@ class CacheDigest {
 
 // Required for all Brunch plugins.
 CacheDigest.prototype.brunchPlugin = true;
-
-// Required for compilers, linters & optimizers.
-// 'javascript', 'stylesheet' or 'template'
-// BrunchPlugin.prototype.type = 'javascript';
-
-// Required for compilers & linters.
-// It would filter-out the list of files to operate on.
-// BrunchPlugin.prototype.extension = 'js';
-// BrunchPlugin.prototype.pattern = /\.js$/;
 
 // Indicates which environment a plugin should be applied to.
 // The default value is '*' for usual plugins and
