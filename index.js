@@ -59,6 +59,14 @@ class CacheDigest {
   }
 
   convertAssetUrl(files, publicFiles) {
+    for (let file of files) {
+      const path = file.path;
+      const fileMd5 = md5File.sync(path);
+      const newFileName = rename(path, {suffix: `-${fileMd5}`});
+      debugger;
+      let asset_urls = shelljs.grep("-E", /asset-url\(['"](.*)['"]\)/, file);
+      shelljs.sed('-i', /asset-url\(['"](.*)['"]\)/, /\1/)
+    }
     debugger;
   }
 
