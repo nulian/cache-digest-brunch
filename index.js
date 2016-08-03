@@ -8,14 +8,12 @@ var path = require("path");
 var rename = require("rename");
 var fs = require("fs-extra");
 var shelljs = require("shelljs");
-var replaceStream = require("replacestream");
 
 // Remove everything your plugin doesn't need.
 class CacheDigest {
   constructor(config) {
     // Replace 'plugin' with your plugin's name;
     this.config = config && config.plugins && config.plugins.cacheDigest;
-    this.assetStrings = [];
   }
 
   // files: [File] => null
@@ -45,23 +43,21 @@ class CacheDigest {
   }
 
   convertAssetUrl(files, publicFiles) {
-    const assetRegex = /asset-url\(['"]?(.*)['"]?\)/g;
+    const assetRegex = /(asset-url\(['"]?(.*)['"]?\))/g;
     for (let file of files) {
       debugger;
-      fs.createReadStream(file.path).pipe(replaceStream(assetRegex, this.calculateReplaceString.bind({this: this, publicFiles: publicFiles})))
-    }
-  }
-
-
-  calculateReplaceString() {
-    const assetRegex = /asset-url\(['"]?(.*)['"]?\)/;
-    for (let line of assetLines) {
-      const [fullString, assetUrl] = assetRegex.exec(line);
-      const fileAsset = this.getKeyByValue(publicFiles, assetUrl);
-      this.assetStrings.push({fullString: fullString, assetUrl: assetUrl, newAssetUrl: fileAsset.destinationPath});
-    }
-    for (let asset of assetStrings) {
-      shelljs.sed('-i', new RegExp(`asset-url[(]['"]?${asset.assetUrl}['"]?[)]`), `url(${asset.newAssetUrl.replace('public/', '/')})`, file.path);
+      const fileContent = fs.readFileSync(file.path, 'utf8');
+      let assetLines = fileContent.match(assetRegex);
+      assetLines = this.cleanArray(assetLines);
+      let assetStrings = [];
+      for (let line of assetLines) {
+        const [fullString, assetUrl] = assetRegex.exec(line);
+        const fileAsset = this.getKeyByValue(publicFiles, assetUrl);
+        assetStrings.push({fullString: fullString, assetUrl: assetUrl, newAssetUrl: fileAsset.destinationPath});
+      }
+      for (let asset of assetStrings) {
+        shelljs.sed('-i', new RegExp(`asset-url[(]['"]?${asset.assetUrl}['"]?[)]`), `url(${asset.newAssetUrl.replace('public/', '/')})`, file.path);
+      }
     }
   }
 
