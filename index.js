@@ -30,7 +30,9 @@ class CacheDigest {
     for (let file of files) {
       const path = file.destinationPath ? file.destinationPath : file.path;
       const newFileName = this.calculateFileMd5(path);
-      file.newPath = newFileName;
+      if (file.destinationPath) {
+        file.destinationPath = newFileName;
+      }
       fs.copySync(path, newFileName);
       if (removeFiles) {
         fs.removeSync(path);
