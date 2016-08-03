@@ -53,8 +53,8 @@ class CacheDigest {
         const fileAsset = this.getKeyByValue(publicFiles, assetUrl);
         assetStrings.push({fullString: fullString, assetUrl: assetUrl, newAssetUrl: fileAsset.destinationPath});
       }
-      debugger;
       for (let asset of assetStrings) {
+        debugger;
         shelljs.sed('-i', new RegExp(`asset-url\(['"]${asset.assetUrl}['"]\)`), `url(${asset.newAssetUrl})`, file.path);
       }
     }
