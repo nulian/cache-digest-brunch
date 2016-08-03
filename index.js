@@ -50,11 +50,11 @@ class CacheDigest {
       for (let line of assetLines) {
         const [fullString, assetUrl] = assetRegex.exec(line);
         const fileAsset = this.getKeyByValue(publicFiles, assetUrl);
-        assetStrings << {fullString: fullString, assetUrl: assetUrl, newAssetUrl: fileAsset.destinationPath};
+        assetStrings.push({fullString: fullString, assetUrl: assetUrl, newAssetUrl: fileAsset.destinationPath});
       }
       debugger;
       for (let asset of assetStrings) {
-        shelljs.sed('-i', /asset-url\(['"](.*)['"]\)/, /\1/)
+        shelljs.sed('-i', new RegExp(`asset-url\(['"]${asset.assetUrl}['"]\)`), `url(${asset.newAssetUrl})`);
       }
     }
     debugger;
