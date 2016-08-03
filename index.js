@@ -90,6 +90,6 @@ CacheDigest.prototype.brunchPlugin = true;
 // Indicates which environment a plugin should be applied to.
 // The default value is '*' for usual plugins and
 // 'production' for optimizers.
-//BrunchPlugin.prototype.defaultEnv = 'production';
+BrunchPlugin.prototype.defaultEnv = 'production';
 
 module.exports = CacheDigest;
