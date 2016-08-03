@@ -46,10 +46,10 @@ class CacheDigest {
       let assetStrings = [];
       for (let line of assetLines) {
         const [fullString, assetUrl] = assetRegex.exec(line);
-        this.getKeyByValue(publicFiles, assetUrl);
-        debugger;
-        assetStrings << {fullString: fullString, assetUrl: assetUrl, newAssetUrl: this.calculateFileMd5(assetUrl)};
+        const fileAsset = this.getKeyByValue(publicFiles, assetUrl);
+        assetStrings << {fullString: fullString, assetUrl: fileAsset.destinationPath, newAssetUrl: this.calculateFileMd5(fileAsset.destinationPath)};
       }
+      debugger;
       for (let asset of assetStrings) {
         shelljs.sed('-i', /asset-url\(['"](.*)['"]\)/, /\1/)
       }
