@@ -43,7 +43,6 @@ class CacheDigest {
   convertAssetUrl(files, publicFiles) {
     const assetRegex = /asset-url\(['"](.*)['"]\)/;
     for (let file of files) {
-      debugger;
       let assetLines = shelljs.grep(assetRegex, file.path).split('\n');
       assetLines = this.cleanArray(assetLines);
       let assetStrings = [];
