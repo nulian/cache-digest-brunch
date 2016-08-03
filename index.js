@@ -15,6 +15,7 @@ class CacheDigest {
   constructor(config) {
     // Replace 'plugin' with your plugin's name;
     this.config = config && config.plugins && config.plugins.cacheDigest;
+    this.assetStrings = [];
   }
 
   // files: [File] => null
@@ -50,7 +51,7 @@ class CacheDigest {
       fs.createReadStream(file.path).pipe(replaceStream(assetRegex, this.calculateReplaceString.bind({this: this, publicFiles: publicFiles})))
     }
   }
-  assetStrings = [];
+
 
   calculateReplaceString() {
     const assetRegex = /asset-url\(['"]?(.*)['"]?\)/;
