@@ -54,7 +54,7 @@ class CacheDigest {
         assetStrings.push({fullString: fullString, assetUrl: assetUrl, newAssetUrl: fileAsset.destinationPath});
       }
       for (let asset of assetStrings) {
-        shelljs.sed('-i', new RegExp(`asset-url[(]['"]${asset.assetUrl}['"][)]`), `url(${asset.newAssetUrl.replace('public/', '/')})`, file.path);
+        shelljs.sed('-i', new RegExp(`asset-url[(]['"]?${asset.assetUrl}['"]?[)]`), `url(${asset.newAssetUrl.replace('public/', '/')})`, file.path);
       }
     }
   }

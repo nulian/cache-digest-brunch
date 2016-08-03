@@ -1,13 +1,13 @@
 {
   "name": "cache-digest-brunch",
-  "version": "1.0.1",
-  "description": "Adds {{DESCRIPTION}} support to brunch.",
+  "version": "1.1.0",
+  "description": "Adds digest support to brunch.",
   "author": "Peter Arentsen",
-  "homepage": "https://github.com/brunch/{{NAME}}-brunch",
+  "homepage": "https://github.com/nulian/cache-digest-brunch",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git@github.com:brunch/{{NAME}}-brunch.git"
+    "url": "git@github.com:nulian/cache-digest-brunch.git"
   },
   "scripts": {
     "test": "node_modules/.bin/eslint index.js && node_modules/.bin/mocha"
