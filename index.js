@@ -50,7 +50,7 @@ class CacheDigest {
       for (let line of assetLines) {
         const [fullString, assetUrl] = assetRegex.exec(line);
         const fileAsset = this.getKeyByValue(publicFiles, assetUrl);
-        assetStrings << {fullString: fullString, assetUrl: assetUrl, newAssetUrl: this.calculateFileMd5(fileAsset.destinationPath)};
+        assetStrings << {fullString: fullString, assetUrl: assetUrl, newAssetUrl: fileAsset.destinationPath};
       }
       debugger;
       for (let asset of assetStrings) {
