@@ -43,7 +43,7 @@ class CacheDigest {
   }
 
   convertAssetUrl(files, publicFiles) {
-    const assetRegex = /asset-url\(['"]?([^"']*)['"]?\)/g;
+    const assetRegex = /asset-url\(['"]?([^"']*)['"]?\)/;
     for (let file of files) {
       debugger;
       const fileContent = fs.readFileSync(file.path, 'utf8');
