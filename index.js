@@ -32,6 +32,8 @@ class CacheDigest {
       const newFileName = this.calculateFileMd5(path);
       if (file.destinationPath) {
         file.destinationPath = newFileName;
+      } else {
+        file.path = newFileName;
       }
       fs.copySync(path, newFileName);
       if (removeFiles) {
@@ -53,7 +55,7 @@ class CacheDigest {
       }
       debugger;
       for (let asset of assetStrings) {
-        shelljs.sed('-i', new RegExp(`asset-url\(['"]${asset.assetUrl}['"]\)`), `url(${asset.newAssetUrl})`);
+        shelljs.sed('-i', new RegExp(`asset-url\(['"]${asset.assetUrl}['"]\)`), `url(${asset.newAssetUrl})`, file.path);
       }
     }
     debugger;
