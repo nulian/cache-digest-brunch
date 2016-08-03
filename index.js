@@ -45,6 +45,7 @@ class CacheDigest {
   convertAssetUrl(files, publicFiles) {
     const assetRegex = /asset-url\(['"]?(.*)['"]?\)/;
     for (let file of files) {
+      debugger;
       let assetLines = shelljs.grep(assetRegex, file.path).split('\n');
       assetLines = this.cleanArray(assetLines);
       let assetStrings = [];
@@ -90,6 +91,6 @@ CacheDigest.prototype.brunchPlugin = true;
 // Indicates which environment a plugin should be applied to.
 // The default value is '*' for usual plugins and
 // 'production' for optimizers.
-CacheDigest.prototype.defaultEnv = 'production';
+//CacheDigest.prototype.defaultEnv = 'production';
 
 module.exports = CacheDigest;
