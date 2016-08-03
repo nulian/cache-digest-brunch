@@ -17,6 +17,7 @@
     "md5-file": "^3.1.1",
     "path": "^0.12.7",
     "rename": "^1.0.3",
+    "replacestream": "^4.0.0",
     "shelljs": "^0.7.3"
   },
   "devDependencies": {
