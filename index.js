@@ -30,6 +30,7 @@ class CacheDigest {
     for (let file of files) {
       const path = file.destinationPath ? file.destinationPath : file.path;
       const newFileName = this.calculateFileMd5(path);
+      file.newPath = newFileName;
       fs.copySync(path, newFileName);
       if (removeFiles) {
         fs.removeSync(path);
@@ -47,7 +48,7 @@ class CacheDigest {
       for (let line of assetLines) {
         const [fullString, assetUrl] = assetRegex.exec(line);
         const fileAsset = this.getKeyByValue(publicFiles, assetUrl);
-        assetStrings << {fullString: fullString, assetUrl: fileAsset.destinationPath, newAssetUrl: this.calculateFileMd5(fileAsset.destinationPath)};
+        assetStrings << {fullString: fullString, assetUrl: assetUrl, newAssetUrl: this.calculateFileMd5(fileAsset.destinationPath)};
       }
       debugger;
       for (let asset of assetStrings) {
