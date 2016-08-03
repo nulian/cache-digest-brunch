@@ -44,10 +44,10 @@ class CacheDigest {
 
   convertAssetUrl(files, publicFiles) {
     const assetRegex = /asset-url\(['"]?([^"']*)['"]?\)/;
+    const assetRegexG = /asset-url\(['"]?([^"']*)['"]?\)/g;
     for (let file of files) {
-      debugger;
       const fileContent = fs.readFileSync(file.path, 'utf8');
-      let assetLines = fileContent.match(assetRegex);
+      let assetLines = fileContent.match(assetRegexG);
       let assetStrings = [];
       for (let line of assetLines) {
         const [fullString, assetUrl] = assetRegex.exec(line);
