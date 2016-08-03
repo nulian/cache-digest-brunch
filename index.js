@@ -55,7 +55,7 @@ class CacheDigest {
       }
       for (let asset of assetStrings) {
         debugger;
-        shelljs.sed('-i', new RegExp(`asset-url\(['"]${asset.assetUrl}['"]\)`), `url(${asset.newAssetUrl})`, file.path);
+        shelljs.sed('-i', new RegExp(`asset-url[(]['"]${asset.assetUrl}['"][)]`), `url(${asset.newAssetUrl})`, file.path);
       }
     }
     debugger;
