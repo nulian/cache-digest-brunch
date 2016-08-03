@@ -47,7 +47,7 @@ class CacheDigest {
     const assetRegexG = /asset-url\(['"]?([^"']*)['"]?\)/g;
     for (let file of files) {
       const fileContent = fs.readFileSync(file.path, 'utf8');
-      let assetLines = fileContent.match(assetRegexG);
+      let assetLines = fileContent.match(assetRegexG) || [];
       let assetStrings = [];
       for (let line of assetLines) {
         const [fullString, assetUrl] = assetRegex.exec(line);
