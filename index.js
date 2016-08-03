@@ -73,9 +73,8 @@ class CacheDigest {
   }
 
   getKeyByValue(object, value) {
-    debugger;
     const valueExp = new RegExp(`${value}$`);
-    return Object.keys(object).find(key => valueExp.match(object[key]));
+    return object.find(value => value.destinationPath.match(valueExp));
   }
 
   // Allows to stop web-servers & other long-running entities.
