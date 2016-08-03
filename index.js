@@ -48,7 +48,6 @@ class CacheDigest {
       debugger;
       const fileContent = fs.readFileSync(file.path, 'utf8');
       let assetLines = fileContent.match(assetRegex);
-      assetLines = this.cleanArray(assetLines);
       let assetStrings = [];
       for (let line of assetLines) {
         const [fullString, assetUrl] = assetRegex.exec(line);
