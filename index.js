@@ -52,7 +52,11 @@ class CacheDigest {
       for (let line of assetLines) {
         const [fullString, assetUrl] = assetRegex.exec(line);
         const fileAsset = this.getKeyByValue(publicFiles, assetUrl);
-        assetStrings.push({fullString: fullString, assetUrl: assetUrl, newAssetUrl: fileAsset.destinationPath});
+        if (fileAsset) {
+          assetStrings.push({fullString: fullString, assetUrl: assetUrl, newAssetUrl: fileAsset.destinationPath});
+        } else {
+          console.error(`Cannot find ${assetUrl}`);
+        }
       }
       for (let asset of assetStrings) {
         shelljs.sed('-i', new RegExp(`asset-url[(]['"]?${asset.assetUrl}['"]?[)]`), `url(${asset.newAssetUrl.replace('public/', '/')})`, file.path);
@@ -63,16 +67,6 @@ class CacheDigest {
   calculateFileMd5(path) {
     const fileMd5 = md5File.sync(path);
     return rename(path, {suffix: `-${fileMd5}`});
-  }
-
-  cleanArray(array) {
-    let temp = [];
-
-    for(let i of array)
-      i && temp.push(i);
-
-    array = temp;
-    return array;
   }
 
   getKeyByValue(object, value) {
@@ -91,6 +85,6 @@ CacheDigest.prototype.brunchPlugin = true;
 // Indicates which environment a plugin should be applied to.
 // The default value is '*' for usual plugins and
 // 'production' for optimizers.
-//CacheDigest.prototype.defaultEnv = 'production';
+CacheDigest.prototype.defaultEnv = 'production';
 
 module.exports = CacheDigest;
