@@ -51,7 +51,7 @@ class CacheDigest {
       let assetStrings = [];
       for (let line of assetLines) {
         const [fullString, assetUrl] = assetRegex.exec(line);
-        const fileAsset = this.getKeyByValue(publicFiles, assetUrl.split(/#|\?/).first());
+        const fileAsset = this.getKeyByValue(publicFiles, assetUrl.split(/#|\?/)[0]);
         if (fileAsset) {
           assetStrings.push({fullString: fullString, assetUrl: assetUrl, newAssetUrl: fileAsset.destinationPath});
         } else {
