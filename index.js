@@ -13,6 +13,7 @@ var shelljs = require("shelljs");
 class CacheDigest {
   constructor(config) {
     // Replace 'plugin' with your plugin's name;
+    this.env = config && config.env[0];
     this.config = config && config.plugins && config.plugins.cacheDigest;
   }
 
@@ -20,9 +21,10 @@ class CacheDigest {
   // Executed when each compilation is finished.
   // Examples: Hot-reload (send a websocket push).
   onCompile(files, publicFiles) {
-    debugger;
-    this.renameFiles(files, false);
-    this.renameFiles(publicFiles, true);
+    if (this.env == "production") {
+      this.renameFiles(files, false);
+      this.renameFiles(publicFiles, true);
+    }
     this.convertAssetUrl(files, publicFiles);
 
   }
