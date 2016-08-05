@@ -20,6 +20,7 @@ class CacheDigest {
   // Executed when each compilation is finished.
   // Examples: Hot-reload (send a websocket push).
   onCompile(files, publicFiles) {
+    debugger;
     this.renameFiles(files, false);
     this.renameFiles(publicFiles, true);
     this.convertAssetUrl(files, publicFiles);
@@ -85,6 +86,6 @@ CacheDigest.prototype.brunchPlugin = true;
 // Indicates which environment a plugin should be applied to.
 // The default value is '*' for usual plugins and
 // 'production' for optimizers.
-CacheDigest.prototype.defaultEnv = 'production';
+//CacheDigest.prototype.defaultEnv = 'production';
 
 module.exports = CacheDigest;
