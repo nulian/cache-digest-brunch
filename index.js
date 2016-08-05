@@ -8,6 +8,7 @@ var path = require("path");
 var rename = require("rename");
 var fs = require("fs-extra");
 var shelljs = require("shelljs");
+var escapeStringRegExp = require("escape-string-regexp");
 
 // Remove everything your plugin doesn't need.
 class CacheDigest {
@@ -62,7 +63,7 @@ class CacheDigest {
         }
       }
       for (let asset of assetStrings) {
-        shelljs.sed('-i', new RegExp(`asset-url[(]['"]?${asset.assetUrl}['"]?[)]`), `url(${asset.newAssetUrl.replace('public/', '/')})`, file.path);
+        shelljs.sed('-i', new RegExp(`asset-url[(]['"]?${escapeStringRegExp(asset.assetUrl)}['"]?[)]`), `url(${asset.newAssetUrl.replace('public/', '/')})`, file.path);
       }
     }
   }
