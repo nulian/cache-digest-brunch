@@ -4,7 +4,7 @@
 // https://github.com/brunch/brunch/blob/master/docs/plugins.md
 
 var md5File = require("md5-file");
-var path = require("path");
+var url = require("url");
 var rename = require("rename");
 var fs = require("fs-extra");
 var shelljs = require("shelljs");
@@ -55,7 +55,8 @@ class CacheDigest {
       let assetStrings = [];
       for (let line of assetLines) {
         const [fullString, assetUrl] = assetRegex.exec(line);
-        const fileAsset = this.getKeyByValue(publicFiles, assetUrl.split(/#|\?/)[0]);
+        const parsedAssetUrl = url.parse(assetUrl);
+        const fileAsset = this.getKeyByValue(publicFiles, parsedAssetUrl.pathname);
         if (fileAsset) {
           assetStrings.push({fullString: fullString, assetUrl: assetUrl, newAssetUrl: fileAsset.destinationPath});
         } else {
@@ -63,6 +64,7 @@ class CacheDigest {
         }
       }
       for (let asset of assetStrings) {
+        debugger;
         shelljs.sed('-i', new RegExp(`asset-url[(]['"]?${escapeStringRegExp(asset.assetUrl)}['"]?[)]`), `url(${asset.newAssetUrl.replace('public/', '/')})`, file.path);
       }
     }
