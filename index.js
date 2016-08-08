@@ -64,8 +64,9 @@ class CacheDigest {
         }
       }
       for (let asset of assetStrings) {
-        debugger;
-        shelljs.sed('-i', new RegExp(`asset-url[(]['"]?${escapeStringRegExp(asset.assetUrl)}['"]?[)]`), `url(${asset.newAssetUrl.replace('public/', '/')})`, file.path);
+        const parsedUrl = url.parse(asset.assetUrl);
+        const extraQueryChars = asset.assetUrl.replace(parsedUrl.pathname, "");
+        shelljs.sed('-i', new RegExp(`asset-url[(]['"]?${escapeStringRegExp(asset.assetUrl)}['"]?[)]`), `url(${asset.newAssetUrl.replace('public/', '/')}${extraQueryChars})`, file.path);
       }
     }
   }

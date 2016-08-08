@@ -1,6 +1,6 @@
 {
   "name": "cache-digest-brunch",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Adds digest support to brunch.",
   "author": "Peter Arentsen",
   "homepage": "https://github.com/nulian/cache-digest-brunch",
@@ -16,7 +16,6 @@
     "escape-string-regexp": "^1.0.5",
     "fs-extra": "^0.30.0",
     "md5-file": "^3.1.1",
-    "path": "^0.12.7",
     "rename": "^1.0.3",
     "replacestream": "^4.0.0",
     "shelljs": "^0.7.3"
