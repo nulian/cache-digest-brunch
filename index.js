@@ -48,8 +48,8 @@ class CacheDigest {
   }
 
   convertAssetUrl(files, publicFiles) {
-    const assetRegex = /asset-url\(['"]?([^"'()]*)['"]?\)/;
-    const assetRegexG = /asset-url\(['"]?([^"'()]*)['"]?\)/g;
+    const assetRegex = /(?:asset-url|asset-path)\(['"]?([^"'()]*)['"]?\)/;
+    const assetRegexG = /(?:asset-url|asset-path)\(['"]?([^"'()]*)['"]?\)/g;
     for (let file of files) {
       const fileContent = fs.readFileSync(file.path, 'utf8');
       let assetLines = fileContent.match(assetRegexG) || [];
@@ -71,6 +71,7 @@ class CacheDigest {
         const parsedUrl = url.parse(asset.assetUrl);
         const extraQueryChars = asset.assetUrl.replace(parsedUrl.pathname, "");
         shelljs.sed('-i', new RegExp(`asset-url[(]['"]?${escapeStringRegExp(asset.assetUrl)}['"]?[)]`), `url(${asset.newAssetUrl.replace('public/', '/')}${extraQueryChars})`, file.path);
+        shelljs.sed('-i', new RegExp(`asset-path[(]['"]?${escapeStringRegExp(asset.assetUrl)}['"]?[)]`), `${asset.newAssetUrl.replace('public/', '/')}${extraQueryChars}`, file.path);
       }
     }
   }
