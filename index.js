@@ -17,6 +17,7 @@ class CacheDigest {
     // Replace 'plugin' with your plugin's name;
     this.env = config && config.env[0];
     this.config = config && config.plugins && config.plugins.cacheDigest;
+    this.include = config && config.include && config.include.files;
   }
 
   // files: [File] => null
