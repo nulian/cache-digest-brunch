@@ -1,5 +1,5 @@
-## {{NAME}}-brunch
-Adds {{DESCRIPTION}} support to
+## cache-digest-brunch
+Adds ability to add digest sha to assets and convert asset-path/asset-url to correct path for
 [brunch](http://brunch.io).
 
 ## Usage
