@@ -17,7 +17,7 @@ class CacheDigest {
     // Replace 'plugin' with your plugin's name;
     this.env = config && config.env[0];
     this.config = config && config.plugins && config.plugins.cacheDigest;
-    this.include = config && config.include && config.include.files;
+    this.files = config && config.plugins && config.plugins.cacheDigest && config.plugins.cacheDigest.files;
   }
 
   // files: [File] => null
@@ -27,6 +27,7 @@ class CacheDigest {
     if (this.env == "production") {
       this.renameFiles(files, false);
       this.renameFiles(publicFiles, true);
+      this.renameFiles(this.files, true);
     }
     this.convertAssetUrl(files, publicFiles);
 
