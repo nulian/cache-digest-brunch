@@ -35,13 +35,15 @@ class CacheDigest {
 
   renameFiles(files, removeFiles) {
     for (let file of files) {
-      const path = file.destinationPath ? file.destinationPath : file.path;
+      const path        = file.destinationPath ? file.destinationPath: file.path;
       const newFileName = this.calculateFileMd5(path);
+      const targetDir   = path.replace(/\/[^\/]*$/, '');
       if (file.destinationPath) {
         file.destinationPath = newFileName;
       } else {
         file.path = newFileName;
       }
+      fs.ensureDirSync(targetDir);
       fs.copySync(path, newFileName);
       if (removeFiles) {
         fs.removeSync(path);
