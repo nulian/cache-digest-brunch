@@ -24,7 +24,7 @@ class CacheDigest {
   // Executed when each compilation is finished.
   // Examples: Hot-reload (send a websocket push).
   onCompile(files, publicFiles) {
-    if (!global.buildingWebComponents) {
+    if (!global.processingPrecompile) {
       if (this.env == "production") {
         this.renameFiles(files, false);
         this.renameFiles(publicFiles, true);
