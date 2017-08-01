@@ -24,13 +24,14 @@ class CacheDigest {
   // Executed when each compilation is finished.
   // Examples: Hot-reload (send a websocket push).
   onCompile(files, publicFiles) {
-    if (this.env == "production") {
-      this.renameFiles(files, false);
-      this.renameFiles(publicFiles, true);
-      this.renameFiles(this.files, true);
+    if (!global.buildingWebComponents) {
+      if (this.env == "production") {
+        this.renameFiles(files, false);
+        this.renameFiles(publicFiles, true);
+        this.renameFiles(this.files, true);
+      }
+      this.convertAssetUrl(files, publicFiles);
     }
-    this.convertAssetUrl(files, publicFiles);
-
   }
 
   renameFiles(files, removeFiles) {
@@ -43,7 +44,6 @@ class CacheDigest {
       } else {
         file.path = newFileName;
       }
-      fs.ensureDirSync(targetDir);
       fs.copySync(path, newFileName);
       if (removeFiles) {
         fs.removeSync(path);
