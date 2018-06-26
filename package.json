@@ -1,6 +1,6 @@
 {
   "name": "cache-digest-brunch",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "description": "Adds digest support to brunch.",
   "author": "Peter Arentsen",
   "homepage": "https://github.com/nulian/cache-digest-brunch",
